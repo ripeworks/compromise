@@ -1,11 +1,14 @@
 var nlp;
-if (typeof window !== undefined) {
-  nlp = require('../../../src/index');
-// nlp = require('../../../builds/compromise');
-// nlp = require('../../../builds/compromise.min');
+if (process && process.env.TESTENV === 'prod') {
+  console.log('prod');
+  nlp = require('../../../builds/compromise.min');
+  // nlp = require('../../../builds/compromise');
 } else {
-  nlp = window.nlp;
-  alert('browser');
+  console.log('dev');
+  nlp = require('../../../src/index');
 }
-
-module.exports = nlp;
+if (typeof window !== undefined) {
+  nlp = window.nlp;
+} else {
+  module.exports = nlp;
+}
