@@ -25,7 +25,10 @@
     "coverage": "node ./scripts/coverage.js",
     "lint": "node ./scripts/prepublish/linter.js"
   },
-  "files": ["builds/", "docs/"],
+  "files": [
+    "builds/",
+    "docs/"
+  ],
   "dependencies": {
     "efrt": "1.1.1"
   },

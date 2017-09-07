@@ -16,8 +16,9 @@ const buildOut = function(lex, options) {
   let keys = Object.keys(lex);
   for (let i = 0; i < keys.length; i++) {
     let str = keys[i];
+
     //conjugate infinitives
-    if (options.conjugate === true && lex[str] === 'Infinitive') {
+    if (options.conjugate === true && lex[keys[i]] === 'Infinitive') {
       const obj = fastConjugate(str);
       let tags = Object.keys(obj);
       for (let o = 0; o < tags.length; o++) {
@@ -29,13 +30,13 @@ const buildOut = function(lex, options) {
       continue;
     }
     //inflect singular nouns
-    if (options.inflect === true && lex[str] === 'Singular') {
+    if (options.inflect === true && lex[keys[i]] === 'Singular') {
       let plural = toPlural(str);
       lex[plural] = 'Plural';
       continue;
     }
     //conjugate comparable adjectives
-    if (lex[str] === 'Comparable') {
+    if (lex[keys[i]] === 'Comparable') {
       let w = adj.toComparative(str);
       if (lex[w] === undefined) {
         lex[w] = 'Comparative';

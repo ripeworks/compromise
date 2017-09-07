@@ -30,6 +30,7 @@ test('adjusted lexicon:', function(t) {
     lkjj: 'Adjective',
     'donkey kong': 'City'
   };
+  nlp.addWords(lexicon);
 
   var arr = [
     ['paris is nice', ['Person', 'Copula', 'Adjective']],
@@ -37,21 +38,23 @@ test('adjusted lexicon:', function(t) {
     ['donkey kong wins the award', ['City', 'City', 'Verb', 'Determiner', 'Noun']]
   ];
   arr.forEach(function(a) {
-    var r = nlp(a[0], lexicon);
+    var r = nlp(a[0]);
     pos_test(r, a[1], t);
   });
   //
   //set gender from lexicon
-  var terms = nlp('Kelly', lexicon);
+  var terms = nlp('Kelly');
   pos_test(terms, ['FemaleName'], t);
   //set as male:
   lexicon = {
     kelly: 'MaleName'
   };
-  terms = nlp('Kelly', lexicon);
+  nlp.addWords(lexicon);
+
+  terms = nlp('Kelly');
   pos_test(terms, ['MaleName'], t);
   //gender follows lumping
-  terms = nlp('Kelly Gruber', lexicon);
+  terms = nlp('Kelly Gruber');
   pos_test(terms, ['MaleName', 'LastName'], t);
 
   t.end();
@@ -61,15 +64,16 @@ test('tricky lexicon:', function(t) {
   var lexicon = {
     'bed bath and beyond': 'Organization'
   };
-  var r = nlp('shopping at Bed Bath and Beyond, the store', lexicon);
+  nlp.addWords(lexicon);
+  var r = nlp('shopping at Bed Bath and Beyond, the store');
   var str = r.organizations().out('normal');
   t.equal(str, 'bed bath and beyond', 'four-word');
 
-  r = nlp('shopping at Bed, Bath, and-beyond the store', lexicon);
+  r = nlp('shopping at Bed, Bath, and-beyond the store');
   str = r.organizations().out('normal');
   t.equal(str, 'bed bath and beyond', 'partially-hyphenated-word');
 
-  r = nlp('shopping at Bed-bath and-beyond the store', lexicon);
+  r = nlp('shopping at Bed-bath and-beyond the store');
   str = r.organizations().out('normal');
   t.equal(str, 'bed bath and beyond', 'many-hyphenated-word');
   t.end();
